@@ -3,6 +3,7 @@ from tkinter import messagebox
 import random
 import pyperclip
 import json
+import cryptocode
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -41,10 +42,11 @@ def save():
     website = website_input.get()
     email_username = email_username_input.get()
     password_text = password_input.get()
+    encoded = cryptocode.encrypt(password_text, "my_password")
     new_data = {
         website: {
             "email": email_username,
-            "password": password_text
+            "password": encoded
         }
     }
 
@@ -80,7 +82,7 @@ def find_password():
         if website in data:
             messagebox.showinfo(title=website,
                                 message=f"Email/Username: {data[website]['email']}\n"
-                                        f"Password: {data[website]['password']}")
+                                        f"Password: {cryptocode.decrypt(data[website]['password'], 'my_password')}")
         else:
             messagebox.showinfo(title="Error", message=f"No details for {website} found!")
 
